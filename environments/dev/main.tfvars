@@ -21,7 +21,7 @@ apps = {
       frontend = 80
     }
     lb = {
-      port = 80
+      port        = 80
       lb_internal = false
     }
     asg = {
@@ -36,7 +36,7 @@ apps = {
       auth-service = 8081
     }
     lb = {
-      port = 8081
+      port        = 8081
       lb_internal = true
     }
     asg = {
@@ -51,7 +51,7 @@ apps = {
       portfolio-service = 8080
     }
     lb = {
-      port = 8080
+      port        = 8080
       lb_internal = true
     }
     asg = {
@@ -66,7 +66,7 @@ apps = {
       analytics-service = 8000
     }
     lb = {
-      port = 8000
+      port        = 8000
       lb_internal = true
     }
     asg = {

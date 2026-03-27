@@ -51,10 +51,16 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_launch_template" "main" {
-  name = "${var.component}-${var.env}"
-  image_id = data.aws_ami.ami.id
-  instance_type = var.instance_type
+  name                   = "${var.component}-${var.env}"
+  image_id               = data.aws_ami.ami.id
+  instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.instance.id, aws_security_group.alb.id]
+  user_data              = filebase64(templatefile("${path.module}/userdata.sh"),
+    {
+      ENV       = var.env
+      COMPONENT = var.component
+    }
+  )
 
   tag_specifications {
     resource_type = "instance"
@@ -65,7 +71,7 @@ resource "aws_launch_template" "main" {
 }
 
 resource "aws_autoscaling_group" "main" {
-  availability_zones = ["us-east-1a","us-east-1b"]
+  availability_zones = ["us-east-1a", "us-east-1b"]
   desired_capacity   = var.asg["min_size"]
   max_size           = var.asg["min_size"]
   min_size           = var.asg["min_size"]
