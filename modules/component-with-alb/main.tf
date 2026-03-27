@@ -55,7 +55,7 @@ resource "aws_launch_template" "main" {
   image_id               = data.aws_ami.ami.id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.instance.id, aws_security_group.alb.id]
-  user_data              = base64encode(templatefile("${path.module}/userdata.sh",
+  user_data = base64encode(templatefile("${path.module}/userdata.sh",
     {
       ENV       = var.env
       COMPONENT = var.component
@@ -90,7 +90,11 @@ resource "aws_lb_target_group" "main" {
   vpc_id   = var.vpc_id
 
   health_check {
-    path = "/health"
+    path                = "/health"
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 5
+    timeout             = 2
   }
 }
 
