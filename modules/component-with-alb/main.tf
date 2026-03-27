@@ -88,6 +88,10 @@ resource "aws_lb_target_group" "main" {
   port     = var.lb["port"]
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+
+  health_check {
+    path = "/health"
+  }
 }
 
 resource "aws_lb" "main" {
